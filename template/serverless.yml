@@ -1,31 +1,11 @@
-# Welcome to Serverless!
-#
-# This file is the main template for this project
-
 service: template # NOTE: update this with your service name
-
-# You can pin your service to only deploy with a specific Serverless version
-# Check out our docs for more details
-# frameworkVersion: "=X.X.X"
 
 provider:
   name: aws
   runtime: dotnetcore2.1
-  region: ${file(${self:custom.PathToSystemCore}serverless.yml):provider.region}
-  apiGateway:
-    restApiId: 
-      Fn::ImportValue: RestApiId-${opt:stage, 'dev'}
-    restApiRootResourceId: 
-      Fn::ImportValue: RestApiRootId-${opt:stage, 'dev'}
-
+  region: ap-southeast-2
+  versionFunctions: false
   logRetentionInDays: 90
-  
-  # environment:
-  #   variable: here
-
-  # or you can define service wide environment variables here
-  # environment:
-  #   ${file(environment.yml)}
 
 # you can add statements to the Lambda function's IAM Role here
 #  iamRoleStatements:
@@ -46,16 +26,12 @@ provider:
 # or you can add iam managed policies by their ARN
 #  iamManagedPolicies:
 #    - 'some:aws:arn:xxx:*:*'
+#   environment:
+#     variable: here
 
 # you can define service wide custom variables here
 custom:
-  PathToSystemCore: "../core/"
-  JobProcessorBucket:
-    Fn::Join:
-      - '-'
-      - - 'jobprocessorbucket'
-        - { Ref: AWS::AccountId }
-        - ${opt:stage, 'dev'}
+  custom1: value1
         
 # you can add packaging information here
 package:
@@ -93,36 +69,7 @@ functions:
               querystrings:
                 resultslimit: false
 
-#    The following are a few example events you can configure
-#    NOTE: Please make sure to change your handler code to work with those events
-#    Check the event documentation for details
-#    events:
-#      - http:
-#          path: users/create
-#          method: get
-#      - s3: ${env:BUCKET}
-#      - schedule: rate(10 minutes)
-#      - sns: greeter-topic
-#      - stream: arn:aws:dynamodb:region:XXXXXX:table/foo/stream/1970-01-01T00:00:00.000
-#      - alexaSkill: amzn1.ask.skill.xx-xx-xx-xx
-#      - alexaSmartHome: amzn1.ask.skill.xx-xx-xx-xx
-#      - iot:
-#          sql: "SELECT * FROM 'some_topic'"
-#      - cloudwatchEvent:
-#          event:
-#            source:
-#              - "aws.ec2"
-#            detail-type:
-#              - "EC2 Instance State-change Notification"
-#            detail:
-#              state:
-#                - pending
-#      - cloudwatchLog: '/aws/lambda/hello'
-#      - cognitoUserPool:
-#          pool: MyUserPool
-#          trigger: PreSignUp
-
 # you can add CloudFormation resource templates here
-resources:
-  - ${file(dynamodb.yml)}
-  - ${file(s3.yml)}
+# resources:
+#   - ${file(dynamodb.yml)}
+#   - ${file(s3.yml)}
